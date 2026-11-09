@@ -1,0 +1,35 @@
+# Render.com deploy for the license server (NowPayments → signed keys).
+services:
+  - type: web
+    name: interview-license-server
+    runtime: python
+    rootDir: server
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PRICE_USD
+        value: 14.99
+      - key: PERIOD_DAYS
+        value: 30
+      - key: DEVICE_CAP
+        value: 2
+      - key: MOCK_NOWPAYMENTS
+        value: 0
+      - key: PUBLIC_BASE_URL
+        value: https://interview-assistant-okvy.onrender.com
+      - key: NOWPAYMENTS_API_KEY
+        sync: false
+      - key: NOWPAYMENTS_IPN_SECRET
+        sync: false
+      - key: IPN_CALLBACK_URL
+        value: https://interview-assistant-okvy.onrender.com/ipn
+      - key: SIGNING_PRIVATE_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      # Telegram bot that delivers purchased keys to the paying chat
+      # (empty = disabled). Uncomment and set in the Render dashboard:
+      # - key: TELEGRAM_BOT_TOKEN
+      #   sync: false
