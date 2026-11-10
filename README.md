@@ -6,6 +6,8 @@
 
 Nothing is ever spoken aloud. Answers appear as text in the app and are mirrored to a Telegram chat you configure, so only you can read them during the call.
 
+> **Where the code lives.** The core assistant (`jarvis/`) and the distribution/licensing build (`shipping/`) live in the private repository **[3lit3/IntAssProject](https://github.com/3lit3/IntAssProject)**. This public repository hosts the packaged **3lit3 Interview Assistant** variant under `Interview Assistant/3lit3 Interview Assistant/`. The documentation below describes the assistant itself.
+
 ---
 
 ## Table of contents
@@ -42,7 +44,7 @@ This fork changes that in a few deliberate ways.
 | **Grounding** | General context | **CV upload** plus an **interview context box**, both persisted and restored across reconnects |
 | **Output** | HUD + spoken audio | Streaming **suggestions panel** plus a **live Telegram mirror** |
 
-The prompt itself (`jarvis/core/prompt.txt`) reinforces the same idea: output only the candidate's answer, never coach or explain, never invent experience, match the interviewer's language, and keep answers concise and interview-ready.
+The prompt itself (`jarvis/core/prompt.txt` in the private repo) reinforces the same idea: output only the candidate's answer, never coach or explain, never invent experience, match the interviewer's language, and keep answers concise and interview-ready.
 
 ---
 
@@ -135,7 +137,9 @@ The prompt itself (`jarvis/core/prompt.txt`) reinforces the same idea: output on
 ### Install
 
 ```powershell
-cd "Interview Assistant\jarvis"
+# The core app lives in the private repository — clone it first
+git clone https://github.com/3lit3/IntAssProject
+cd IntAssProject\jarvis
 python setup.py
 ```
 
@@ -218,8 +222,18 @@ Settings live in `config/api_keys.json` (created on first run, gitignored).
 ## Repository layout
 
 ```text
-Interview Assistant/
-├── jarvis/                                  # The interview assistant (main app)
+Jar-In-Ass/                                  # this public repository
+├── README.md
+└── Interview Assistant/
+    └── 3lit3 Interview Assistant/           # packaged variant with a Telegram-based purchase flow
+        ├── main.py, ui.py                   # jarvis core bundled into the variant
+        ├── actions/, core/, dashboard/, config/, memory/, plugins/
+        ├── client/                          # end-user client with license gate
+        ├── server/                          # license signing / key minting
+        └── HANDOFF.md                       # design decisions for this variant
+
+3lit3/IntAssProject/                         # private repository — core source
+├── jarvis/                                  # the interview assistant (main app)
 │   ├── main.py                              # Entry point, audio pipeline, Live session
 │   ├── ui.py                                # PyQt6 HUD, suggestions panel, CV/context UI
 │   ├── core/
@@ -237,16 +251,11 @@ Interview Assistant/
 │   ├── setup.py
 │   └── install.bat
 │
-├── shipping/                                # Packaged distribution build + license server
-│   ├── client/                              # End-user GUI wrapper and licensing gate
-│   ├── server/                              # FastAPI license/payment server (Render)
-│   ├── 3lit3/                               # PyInstaller build definition
-│   └── schema.sql
-│
-└── shipping - using telegram payment handler/  # Variant with a Telegram-based purchase flow
-    ├── client/                              # Client with license gate
-    ├── server/                              # License signing / key minting
-    └── HANDOFF.md                           # Design decisions for that variant
+└── shipping/                                # Packaged distribution build + license server
+    ├── client/                              # End-user GUI wrapper and licensing gate
+    ├── server/                              # FastAPI license/payment server (Render)
+    ├── 3lit3/                               # PyInstaller build definition
+    └── schema.sql
 ```
 
 ---
@@ -275,7 +284,7 @@ Interview Assistant/
 
 ## Credits and license
 
-This project is a fork of **JARVIS / MARK LV** by **[FatihMakes](https://github.com/FatihMakes)**, used under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** license. The original copyright and license notice are retained in `jarvis/LICENSE`.
+This project is a fork of **JARVIS / MARK LV** by **[FatihMakes](https://github.com/FatihMakes)**, used under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** license. The original copyright and license notice are retained in `jarvis/LICENSE` in the private repository.
 
 The interview adaptation — the interview persona, silent text-only delivery, CV and context grounding, loopback-first capture, and the Telegram mirror — is built on top of that work.
 
