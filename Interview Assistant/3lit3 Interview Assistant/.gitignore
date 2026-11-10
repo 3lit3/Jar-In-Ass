@@ -100,3 +100,6 @@ env/
 win_env/
 **/__pycache__/
 *.py[cod]
+
+# Release deliverables (installers / portable exes; too large for git)
+release/
