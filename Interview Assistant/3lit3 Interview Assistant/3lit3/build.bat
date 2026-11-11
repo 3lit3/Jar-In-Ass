@@ -53,8 +53,8 @@ rem ── 1. Copy the source into the build tree (never touch the originals) �
 echo [1/5] copying source -> %APP%
 if exist "%APP%" rmdir /s /q "%APP%"
 robocopy "%SRC%" "%APP%" /E /NFL /NDL /NJH /NJS /NP ^
-    /XD __pycache__ .venv venv node_modules .git certs logs downloads screenshots 3lit3 tests server ^
-    /XF api_keys.json *.key *.crt *.pdf long_term.json .env HANDOFF.md >nul
+    /XD __pycache__ .venv venv node_modules .git certs logs downloads screenshots 3lit3 tests server release ^
+    /XF api_keys.json *.key *.crt *.pdf long_term.json .env HANDOFF.md ADMIN_KEY.txt >nul
 if errorlevel 8 (
     echo [error] robocopy failed
     exit /b 1

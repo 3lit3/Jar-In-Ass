@@ -3318,4 +3318,13 @@ def main():
                 pass
 
 if __name__ == "__main__":
+    # PyInstaller only *installs* multiprocessing.freeze_support; it never calls
+    # it for us. Without this, every spawn() child (the isolated system-sound
+    # capture) re-runs this frozen exe as a full app: a second console + Qt
+    # window opens, no audio is captured, the supervisor's watchdog kills it
+    # after the 20s open-phase grace (exit code -15) and respawns — forever.
+    # It must run before main(), and before any multiprocessing use.
+    import multiprocessing as _mp
+
+    _mp.freeze_support()
     main()
